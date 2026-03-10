@@ -1,9 +1,21 @@
 VieClus v1.2
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![C++](https://img.shields.io/badge/C++-11/14-blue.svg)](https://isocpp.org/)
+[![CMake](https://img.shields.io/badge/CMake-3.10+-064F8C.svg)](https://cmake.org/)
+[![Build](https://github.com/KaHIP/VieClus/actions/workflows/build.yml/badge.svg)](https://github.com/KaHIP/VieClus/actions/workflows/build.yml)
+[![GitHub Release](https://img.shields.io/github/v/release/KaHIP/VieClus)](https://github.com/KaHIP/VieClus/releases/latest)
 [![PyPI](https://img.shields.io/pypi/v/vieclus)](https://pypi.org/project/vieclus/)
+[![Homebrew](https://img.shields.io/badge/Homebrew-available-orange)](https://github.com/KaHIP/homebrew-kahip)
+[![Linux](https://img.shields.io/badge/Linux-supported-success.svg)](https://github.com/KaHIP/VieClus)
+[![macOS](https://img.shields.io/badge/macOS-supported-success.svg)](https://github.com/KaHIP/VieClus)
+[![GitHub Stars](https://img.shields.io/github/stars/KaHIP/VieClus)](https://github.com/KaHIP/VieClus/stargazers)
+[![GitHub Issues](https://img.shields.io/github/issues/KaHIP/VieClus)](https://github.com/KaHIP/VieClus/issues)
+[![Last Commit](https://img.shields.io/github/last-commit/KaHIP/VieClus)](https://github.com/KaHIP/VieClus/commits)
+[![arXiv](https://img.shields.io/badge/arXiv-1802.07034-b31b1b.svg)](https://arxiv.org/abs/1802.07034)
+[![Heidelberg University](https://img.shields.io/badge/Heidelberg-University-c1002a)](https://www.uni-heidelberg.de)
 =====
 
-The graph clustering framework VieClus -- Vienna Graph Clustering.
+The graph clustering framework VieClus -- Vienna Graph Clustering. Part of the [KaHIP](https://github.com/KaHIP) organization.
 
 Graph clustering is the problem of detecting tightly connected regions of a
 graph. Depending on the task, knowledge about the structure of the graph can
@@ -32,6 +44,12 @@ Moreover, while the previous best result for different instances has been comput
 
 Installation Notes
 =====
+
+### Install via Homebrew
+
+```bash
+brew install KaHIP/kahip/vieclus
+```
 
 ### C++ Command Line Tool
 
