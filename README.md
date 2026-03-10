@@ -178,13 +178,15 @@ If you publish results using our algorithms, please acknowledge our work by quot
 
 ```
 @inproceedings{BiedermannHSS18,
-             AUTHOR = {Biedermann, Sonja and Henzinger, Monika and Schulz, Christian and Schuster, Bernhard},
-             TITLE = {{Memetic Graph Clustering}},
-             BOOKTITLE = {{Proceedings of the 17th International Symposium on Experimental Algorithms (SEA'18)}},
-             SERIES = {{LIPIcs}},
-             PUBLISHER = {Dagstuhl},
-             NOTE = {Technical Report, arXiv:1802.07034},
-             YEAR = {2018}
+  author    = {Biedermann, Sonja and Henzinger, Monika and Schulz, Christian and Schuster, Bernhard},
+  title     = {{Memetic Graph Clustering}},
+  booktitle = {17th International Symposium on Experimental Algorithms (SEA 2018)},
+  series    = {LIPIcs},
+  volume    = {103},
+  pages     = {3:1--3:15},
+  publisher = {Schloss Dagstuhl -- Leibniz-Zentrum f{\"{u}}r Informatik},
+  year      = {2018},
+  doi       = {10.4230/LIPIcs.SEA.2018.3}
 }
 ```
 
