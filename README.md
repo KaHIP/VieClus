@@ -30,12 +30,6 @@ VieClus v1.2
 | **Interfaces** | CLI, Python (`pip install vieclus`), C/C++ library |
 | **Parallel** | Optional MPI support for parallel evolutionary search |
 
-<p align="center">
-<img src="./img/example_clustering.png"
-  alt="Example: a graph with three detected clusters (red, cyan, yellow)"
-  width="400">
-</p>
-
 ## Quick Start
 
 ### Install
