@@ -90,22 +90,26 @@ mpirun -n P vieclus <graph-file> [options]
 
 **Included tools:**
 
-| Program | Description |
-|:--------|:-----------|
-| `vieclus` | Main clustering algorithm |
-| `graphchecker` | Validate that a graph file is correctly formatted |
-| `evaluator` | Compute modularity of a given clustering: `./deploy/evaluator <graph> --input_partition=<clustering>` |
+| Program | Homebrew name | Description |
+|:--------|:-------------|:-----------|
+| `vieclus` | `vieclus` | Main clustering algorithm |
+| `graphchecker` | `vieclus_graphchecker` | Validate that a graph file is correctly formatted |
+| `evaluator` | `vieclus_evaluator` | Compute modularity of a given clustering |
+
+> **Note:** When installed via Homebrew, `graphchecker` and `evaluator` are prefixed with `vieclus_` to avoid name collisions with other tools (e.g. KaHIP). When built from source, the original names are used in `./deploy/`.
 
 **Example workflow:**
 ```bash
 # 1. Check your graph file
-./deploy/graphchecker mygraph.graph
+./deploy/graphchecker mygraph.graph          # from source
+vieclus_graphchecker mygraph.graph           # via brew
 
 # 2. Cluster it (4 MPI processes, 60 second time limit)
 mpirun -n 4 ./deploy/vieclus mygraph.graph --time_limit=60 --output_filename=result.clustering
 
 # 3. Evaluate the result
-./deploy/evaluator mygraph.graph --input_partition=result.clustering
+./deploy/evaluator mygraph.graph --input_partition=result.clustering          # from source
+vieclus_evaluator mygraph.graph --input_partition=result.clustering           # via brew
 ```
 
 ---
