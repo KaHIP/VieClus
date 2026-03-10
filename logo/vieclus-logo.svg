@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 250" width="900" height="250">
+  <defs>
+    <!-- Glow filters for clusters -->
+    <filter id="glow-red" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feFlood flood-color="#e74c3c" flood-opacity="0.3"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-blue" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feFlood flood-color="#3498db" flood-opacity="0.3"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-yellow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feFlood flood-color="#f1c40f" flood-opacity="0.3"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Subtle background glow -->
+    <radialGradient id="bg-glow1" cx="25%" cy="50%">
+      <stop offset="0%" stop-color="#e74c3c" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#e74c3c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bg-glow2" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="#3498db" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#3498db" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bg-glow3" cx="20%" cy="75%">
+      <stop offset="0%" stop-color="#f1c40f" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#f1c40f" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="250" rx="16" ry="16" fill="#1a1d23"/>
+
+  <!-- Subtle background glows behind clusters -->
+  <ellipse cx="220" cy="125" rx="200" ry="130" fill="url(#bg-glow1)"/>
+  <ellipse cx="280" cy="70" rx="120" ry="90" fill="url(#bg-glow2)"/>
+  <ellipse cx="160" cy="180" rx="120" ry="80" fill="url(#bg-glow3)"/>
+
+  <!-- ==================== GRAPH EDGES ==================== -->
+  <!-- Intra-cluster edges (solid, colored faintly) -->
+
+  <!-- Red cluster edges -->
+  <line x1="100" y1="80" x2="160" y2="60" stroke="#e74c3c" stroke-width="1.5" stroke-opacity="0.5"/>
+  <line x1="100" y1="80" x2="80" y2="140" stroke="#e74c3c" stroke-width="1.5" stroke-opacity="0.5"/>
+  <line x1="100" y1="80" x2="160" y2="130" stroke="#e74c3c" stroke-width="1.5" stroke-opacity="0.5"/>
+  <line x1="160" y1="60" x2="160" y2="130" stroke="#e74c3c" stroke-width="1.5" stroke-opacity="0.5"/>
+  <line x1="160" y1="60" x2="220" y2="85" stroke="#e74c3c" stroke-width="1.5" stroke-opacity="0.5"/>
+  <line x1="80" y1="140" x2="160" y2="130" stroke="#e74c3c" stroke-width="1.5" stroke-opacity="0.5"/>
+  <line x1="220" y1="85" x2="160" y2="130" stroke="#e74c3c" stroke-width="1.5" stroke-opacity="0.5"/>
+
+  <!-- Blue cluster edges -->
+  <line x1="300" y1="55" x2="350" y2="90" stroke="#3498db" stroke-width="1.5" stroke-opacity="0.5"/>
+  <line x1="300" y1="55" x2="270" y2="110" stroke="#3498db" stroke-width="1.5" stroke-opacity="0.5"/>
+  <line x1="350" y1="90" x2="270" y2="110" stroke="#3498db" stroke-width="1.5" stroke-opacity="0.5"/>
+  <line x1="350" y1="90" x2="330" y2="140" stroke="#3498db" stroke-width="1.5" stroke-opacity="0.5"/>
+  <line x1="270" y1="110" x2="330" y2="140" stroke="#3498db" stroke-width="1.5" stroke-opacity="0.5"/>
+
+  <!-- Yellow cluster edges -->
+  <line x1="140" y1="185" x2="210" y2="175" stroke="#f1c40f" stroke-width="1.5" stroke-opacity="0.5"/>
+  <line x1="140" y1="185" x2="170" y2="215" stroke="#f1c40f" stroke-width="1.5" stroke-opacity="0.5"/>
+  <line x1="210" y1="175" x2="170" y2="215" stroke="#f1c40f" stroke-width="1.5" stroke-opacity="0.5"/>
+  <line x1="210" y1="175" x2="250" y2="205" stroke="#f1c40f" stroke-width="1.5" stroke-opacity="0.5"/>
+  <line x1="170" y1="215" x2="250" y2="205" stroke="#f1c40f" stroke-width="1.5" stroke-opacity="0.5"/>
+
+  <!-- Inter-cluster edges (dashed, dim) -->
+  <line x1="220" y1="85" x2="270" y2="110" stroke="#888" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="4,4"/>
+  <line x1="160" y1="130" x2="140" y2="185" stroke="#888" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="4,4"/>
+  <line x1="330" y1="140" x2="250" y2="205" stroke="#888" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="4,4"/>
+
+  <!-- ==================== GRAPH NODES ==================== -->
+  <!-- Red cluster nodes -->
+  <circle cx="100" cy="80" r="10" fill="#e74c3c" filter="url(#glow-red)"/>
+  <circle cx="160" cy="60" r="10" fill="#e74c3c" filter="url(#glow-red)"/>
+  <circle cx="80" cy="140" r="10" fill="#e74c3c" filter="url(#glow-red)"/>
+  <circle cx="160" cy="130" r="10" fill="#e74c3c" filter="url(#glow-red)"/>
+  <circle cx="220" cy="85" r="10" fill="#e74c3c" filter="url(#glow-red)"/>
+
+  <!-- Blue cluster nodes -->
+  <circle cx="300" cy="55" r="10" fill="#3498db" filter="url(#glow-blue)"/>
+  <circle cx="350" cy="90" r="10" fill="#3498db" filter="url(#glow-blue)"/>
+  <circle cx="270" cy="110" r="10" fill="#3498db" filter="url(#glow-blue)"/>
+  <circle cx="330" cy="140" r="10" fill="#3498db" filter="url(#glow-blue)"/>
+
+  <!-- Yellow cluster nodes -->
+  <circle cx="140" cy="185" r="10" fill="#f1c40f" filter="url(#glow-yellow)"/>
+  <circle cx="210" cy="175" r="10" fill="#f1c40f" filter="url(#glow-yellow)"/>
+  <circle cx="170" cy="215" r="10" fill="#f1c40f" filter="url(#glow-yellow)"/>
+  <circle cx="250" cy="205" r="10" fill="#f1c40f" filter="url(#glow-yellow)"/>
+
+  <!-- ==================== TEXT ==================== -->
+  <!-- Title -->
+  <text x="520" y="110" font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="64" font-weight="700" fill="#ffffff" letter-spacing="1">VieClus</text>
+
+  <!-- Subtitle -->
+  <text x="524" y="145" font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="20" fill="#a0a8b4" letter-spacing="0.5">Vienna Graph Clustering</text>
+
+  <!-- ==================== LEGEND ==================== -->
+  <!-- Cluster 1 -->
+  <circle cx="528" cy="190" r="6" fill="#e74c3c"/>
+  <text x="542" y="194" font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="13" fill="#8890a0">Cluster 1</text>
+
+  <!-- Cluster 2 -->
+  <circle cx="628" cy="190" r="6" fill="#3498db"/>
+  <text x="642" y="194" font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="13" fill="#8890a0">Cluster 2</text>
+
+  <!-- Cluster 3 -->
+  <circle cx="728" cy="190" r="6" fill="#f1c40f"/>
+  <text x="742" y="194" font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="13" fill="#8890a0">Cluster 3</text>
+
+  <!-- Inter-cluster edges legend -->
+  <line x1="522" y1="215" x2="548" y2="215" stroke="#888" stroke-width="1.5" stroke-opacity="0.5" stroke-dasharray="4,4"/>
+  <text x="558" y="219" font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="13" fill="#8890a0">Inter-cluster edges</text>
+</svg>

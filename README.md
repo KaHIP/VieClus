@@ -15,6 +15,10 @@ VieClus v1.2
 [![Heidelberg University](https://img.shields.io/badge/Heidelberg-University-c1002a)](https://www.uni-heidelberg.de)
 =====
 
+<p align="center">
+  <img src="./logo/vieclus-logo.svg" alt="VieClus Logo" width="900"/>
+</p>
+
 The graph clustering framework VieClus -- Vienna Graph Clustering. Part of the [KaHIP](https://github.com/KaHIP) organization.
 
 Graph clustering is the problem of detecting tightly connected regions of a
