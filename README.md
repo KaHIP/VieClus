@@ -21,6 +21,8 @@ VieClus v1.2
 
 **VieClus** (Vienna Graph Clustering) is a memetic algorithm for high-quality graph clustering that optimizes modularity. It is the state-of-the-art solver for achieving the highest possible modularity values. Part of the [KaHIP](https://github.com/KaHIP) organization.
 
+> **Python Interface:** An easy-to-use Python interface for this software is available in [CHSZLabLib](https://github.com/CHSZLab/CHSZLabLib).
+
 | | |
 |:--|:--|
 | **What it solves** | Graph clustering: detecting tightly connected regions (communities) in a graph |
