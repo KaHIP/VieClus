@@ -1,4 +1,4 @@
-VieClus v1.2
+VieClus v1.3
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![C++](https://img.shields.io/badge/C++-11/14-blue.svg)](https://isocpp.org/)
 [![CMake](https://img.shields.io/badge/CMake-3.10+-064F8C.svg)](https://cmake.org/)
@@ -314,6 +314,13 @@ mpirun -n 4 ./deploy/vieclus mygraph.graph --leiden --time_limit=60
 ---
 
 ## Release Notes
+
+### v1.3
+- Added `--leiden` flag: Leiden algorithm guaranteeing connected communities
+- Added `--leiden_theta` parameter for refinement temperature control
+- Leiden uses queue-based local moving, stochastic refinement, and dual-partition aggregation
+- All evolutionary operators enforce connectivity when `--leiden` is active
+- Fixed include directory ordering in CMakeLists.txt
 
 ### v1.2
 - Added Python interface (`pip install vieclus`) with pybind11 bindings
