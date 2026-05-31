@@ -28,7 +28,7 @@ VieClus v1.2
 | **What it solves** | Graph clustering: detecting tightly connected regions (communities) in a graph |
 | **Objective** | Maximize [modularity](https://en.wikipedia.org/wiki/Modularity_(networks)) |
 | **Key result** | Improves or reproduces **all entries** of the 10th DIMACS Implementation Challenge |
-| **Algorithm** | Memetic (evolutionary) algorithm with multilevel techniques and ensemble recombination |
+| **Algorithm** | Memetic (evolutionary) algorithm with multilevel techniques and ensemble recombination. Optional Leiden mode guarantees connected communities. |
 | **Interfaces** | CLI, Python (`pip install vieclus`), C/C++ library |
 | **Parallel** | Optional MPI support for parallel evolutionary search |
 
@@ -88,6 +88,8 @@ mpirun -n P vieclus <graph-file> [options]
 | `--time_limit=<double>` | Time limit in seconds. Must be > 0 to enable evolutionary recombination. | `0` |
 | `--seed=<int>` | Random seed | `0` |
 | `--output_filename=<string>` | Output file for the clustering | `tmpclustering` |
+| `--leiden` | Use Leiden algorithm (guarantees connected communities) | off |
+| `--leiden_theta=<double>` | Leiden refinement temperature parameter | `0.01` |
 | `--help` | Print help | |
 
 **Included tools:**
@@ -282,6 +284,21 @@ VieClus is a **memetic algorithm** that combines evolutionary search with multil
 3. **Parallel search** (with MPI): Multiple processes explore the solution space independently and exchange high-quality individuals, improving diversity and convergence.
 
 More time and more MPI processes generally yield better modularity values. For details, see the [paper](https://arxiv.org/abs/1802.07034).
+
+### Leiden Mode (`--leiden`)
+
+When `--leiden` is passed, VieClus uses the [Leiden algorithm](https://www.nature.com/articles/s41598-019-41695-z) (Traag, Waltman, van Eck, 2019) instead of Louvain as its core clustering method. This guarantees that all output communities are connected subgraphs. The implementation uses three phases per multilevel iteration:
+
+1. **Fast local moving** (queue-based): only revisits nodes whose neighbors changed, making it faster than Louvain's full sweeps.
+2. **Refinement**: within each community, restarts from singletons and stochastically merges nodes into adjacent sub-communities. Since only singleton nodes can move, connectivity is guaranteed by construction.
+3. **Dual-partition aggregation**: aggregates based on the refined partition, but initializes the next level with the coarser partition from phase 1.
+
+All evolutionary operators additionally enforce connectivity via BFS-based splitting when `--leiden` is active.
+
+**Example:**
+```bash
+mpirun -n 4 ./deploy/vieclus mygraph.graph --leiden --time_limit=60
+```
 
 ---
 
