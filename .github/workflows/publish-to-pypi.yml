@@ -91,9 +91,16 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -R dist
 
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
-          skip-existing: true
-          attestations: false
+          python-version: '3.11'
+
+      - name: Install twine
+        run: pip install twine
+
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: twine upload --skip-existing dist/*
