@@ -15,7 +15,9 @@ pybind11::object wrap_vieclus(
                 bool suppress_output,
                 int seed,
                 double time_limit,
-                int cluster_upperbound) {
+                int cluster_upperbound,
+                bool leiden,
+                double leiden_theta) {
         int n = pybind11::len(xadj) - 1;
         std::vector<int> xadjv, adjncyv, vwgtv, adjwgtv;
 
@@ -39,6 +41,7 @@ pybind11::object wrap_vieclus(
                            &adjwgtv[0], &adjncyv[0],
                            suppress_output, seed,
                            time_limit, cluster_upperbound,
+                           leiden, leiden_theta,
                            &modularity, &num_clusters, clustering);
 
         pybind11::list clustering_list;
@@ -60,5 +63,7 @@ PYBIND11_MODULE(vieclus, m) {
               pybind11::arg("suppress_output") = true,
               pybind11::arg("seed") = 0,
               pybind11::arg("time_limit") = 1.0,
-              pybind11::arg("cluster_upperbound") = 0);
+              pybind11::arg("cluster_upperbound") = 0,
+              pybind11::arg("leiden") = false,
+              pybind11::arg("leiden_theta") = 0.01);
 }

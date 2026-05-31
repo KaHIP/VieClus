@@ -25,6 +25,8 @@ extern "C"
 //   seed          - random seed
 //   time_limit    - time limit in seconds
 //   cluster_upperbound - max cluster size (0 = no limit)
+//   leiden        - if true, use Leiden algorithm (guarantees connected communities)
+//   leiden_theta  - Leiden refinement temperature parameter (default 0.01)
 //
 // Output:
 //   modularity    - modularity of the computed clustering
@@ -34,6 +36,7 @@ void vieclus_clustering(int* n, int* vwgt, int* xadj,
                         int* adjcwgt, int* adjncy,
                         bool suppress_output, int seed,
                         double time_limit, int cluster_upperbound,
+                        bool leiden, double leiden_theta,
                         double* modularity, int* num_clusters, int* clustering);
 
 #ifdef __cplusplus

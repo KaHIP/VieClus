@@ -188,6 +188,8 @@ print(f"Clustering: {clustering}")
 | `seed` | int | `0` | Random seed |
 | `time_limit` | float | `1.0` | Time limit in seconds |
 | `cluster_upperbound` | int | `0` | Max cluster size (0 = no limit) |
+| `leiden` | bool | `False` | Use Leiden algorithm (guarantees connected communities) |
+| `leiden_theta` | float | `0.01` | Leiden refinement temperature parameter |
 
 **Returns:** `(modularity: float, clustering: list[int])` where modularity is in [-1, 1] and clustering maps each node to a cluster ID.
 

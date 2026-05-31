@@ -13,6 +13,7 @@
 #include "tools/modularitymetric.h"
 #include "tools/global_timer.h"
 #include "parallel_mh_clustering/parallel_mh_async_clustering.h"
+#include "clustering/leiden_config.h"
 #include "partition/partition_config.h"
 #include "macros_assertions.h"
 #include "configuration.h"
@@ -52,6 +53,7 @@ void vieclus_clustering(int* n, int* vwgt, int* xadj,
                         int* adjcwgt, int* adjncy,
                         bool suppress_output, int seed,
                         double time_limit, int cluster_upperbound,
+                        bool leiden, double leiden_theta,
                         double* modularity, int* num_clusters, int* clustering) {
 
         int argn_dummy = 0;
@@ -90,7 +92,8 @@ void vieclus_clustering(int* n, int* vwgt, int* xadj,
 
         // Run clustering
         global_timer_restart();
-        parallel_mh_async_clustering mh;
+        LeidenConfig leiden_config(leiden, leiden_theta);
+        parallel_mh_async_clustering mh(leiden_config);
         mh.perform_partitioning(config, G);
 
         // Compute results
