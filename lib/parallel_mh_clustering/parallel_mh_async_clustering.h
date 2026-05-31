@@ -15,11 +15,13 @@
 #include "data_structure/graph_access.h"
 #include "partition_config.h"
 #include "population_clustering.h"
+#include "clustering/leiden_config.h"
 #include "tools/global_timer.h"
 
 class parallel_mh_async_clustering {
 public:
         parallel_mh_async_clustering();
+        parallel_mh_async_clustering(const LeidenConfig & leiden_config);
         parallel_mh_async_clustering(MPI_Comm communicator);
         virtual ~parallel_mh_async_clustering();
 
@@ -46,6 +48,7 @@ private:
         //island
         population_clustering* m_island;
         MPI_Comm m_communicator;
+        LeidenConfig m_leiden_config;
 };
 
 

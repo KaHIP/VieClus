@@ -24,6 +24,7 @@
 #include "macros_assertions.h"
 #include "parallel_mh_clustering/parallel_mh_async_clustering.h"
 #include "parse_parameters.h"
+#include "clustering/leiden_config.h"
 #include "partition/graph_partitioner.h"
 #include "partition/partition_config.h"
 #include "quality_metrics.h"
@@ -39,15 +40,16 @@ int main(int argn, char **argv) {
 #endif    /* starts MPI */
 
         PartitionConfig partition_config;
+        LeidenConfig leiden_config;
         std::string graph_filename;
         bool is_graph_weighted = false;
         bool suppress_output   = false;
         bool recursive         = false;
 
-        int ret_code = parse_parameters(argn, argv, 
-                        partition_config, graph_filename, 
-                        is_graph_weighted, suppress_output, 
-                        recursive); 
+        int ret_code = parse_parameters(argn, argv,
+                        partition_config, graph_filename,
+                        is_graph_weighted, suppress_output,
+                        recursive, leiden_config); 
 
         if(ret_code) {
                 return 0;
@@ -65,7 +67,7 @@ int main(int argn, char **argv) {
         t.restart();
         
         partition_config.k = 1;
-        parallel_mh_async_clustering mh;
+        parallel_mh_async_clustering mh(leiden_config);
         mh.perform_partitioning(partition_config, G);
 
         int rank, size;

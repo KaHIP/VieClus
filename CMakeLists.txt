@@ -81,11 +81,11 @@ endif()
 # ParHIP
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/app)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/extern/KaHIP/app)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/extern/argtable3-3.0.3)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/extern/KaHIP/lib)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/app)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/extern/KaHIP/lib/io)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/extern/KaHIP/lib/partition)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/extern/KaHIP/lib/partition/uncoarsening/refinement/quotient_graph_refinement/flow_refinement)
@@ -93,8 +93,10 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/extern/KaHIP/lib/tools)
 
 
 
-set(LIBPADYGRCL_FILES 
+set(LIBPADYGRCL_FILES
 lib/clustering/louvainmethod.cpp
+lib/clustering/leidenmethod.cpp
+lib/clustering/connectivity.cpp
 lib/clustering/labelpropagation.cpp
 lib/clustering/neighborhood.cpp
 lib/clustering/coarsening/contractor.cpp
@@ -186,6 +188,8 @@ lib/parallel_mh_clustering/population_clustering.cpp
 lib/parallel_mh_clustering/exchange/exchanger_clustering.cpp
 lib/tools/graph_communication.cpp
 lib/clustering/louvainmethod.cpp
+lib/clustering/leidenmethod.cpp
+lib/clustering/connectivity.cpp
 lib/clustering/labelpropagation.cpp
 lib/clustering/neighborhood.cpp
 lib/clustering/coarsening/coarsening.cpp
