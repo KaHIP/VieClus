@@ -18,13 +18,17 @@
 #endif
 #include <sstream>
 #include "configuration.h"
+#include "clustering/leiden_config.h"
+
+static LeidenConfig _default_leiden_config;
 
 int parse_parameters(int argn, char **argv,
                      PartitionConfig & partition_config,
                      std::string & graph_filename,
                      bool & is_graph_weighted,
                      bool & suppress_program_output,
-                     bool & recursive) {
+                     bool & recursive,
+                     LeidenConfig & leiden_config = _default_leiden_config) {
 
         const char *progname = argv[0];
 
@@ -49,6 +53,8 @@ int parse_parameters(int argn, char **argv,
         struct arg_str *output_log_json                             = arg_str0(NULL, "output_log_json", NULL, "File to write the log in JSON format into it. Use \"-\" to write to STDOUT. (Default: disabled)");
 
         struct arg_int *mh_pool_size                         = arg_int0(NULL, "mh_pool_size", NULL, "MetaHeuristic Pool Size.");
+        struct arg_lit *leiden                               = arg_lit0(NULL, "leiden", "Use Leiden algorithm (guarantees connected communities).");
+        struct arg_dbl *leiden_theta                         = arg_dbl0(NULL, "leiden_theta", NULL, "Leiden refinement temperature parameter. Default: 0.01.");
         struct arg_end *end                                  = arg_end(100);
 
         // Define argtable.
@@ -58,10 +64,12 @@ int parse_parameters(int argn, char **argv,
                 time_limit,
                 //mh_pool_size,
                 //mh_mutate_fraction,
-		//mh_print_log, 
+		//mh_print_log,
                 //local_partitioning_repetitions,
                 //input_partition,
                 filename_output,
+                leiden,
+                leiden_theta,
 #elif defined MODE_EVALUATOR
                 input_partition,
 #elif defined MODE_CLUSTERING
@@ -72,6 +80,8 @@ int parse_parameters(int argn, char **argv,
     // if we use size constrained label propagation
     lm_cluster_coarsening_factor,
     output_log_json,
+    leiden,
+    leiden_theta,
 #endif
                 end
         };
@@ -165,6 +175,14 @@ int parse_parameters(int argn, char **argv,
 
         if (output_log_json->count > 0) {
             partition_config.outputLogJsonFileName = output_log_json->sval[0];
+        }
+
+        if(leiden->count > 0) {
+                leiden_config.enabled = true;
+        }
+
+        if(leiden_theta->count > 0) {
+                leiden_config.theta = leiden_theta->dval[0];
         }
 
         if(mh_mutate_fraction->count > 0) {

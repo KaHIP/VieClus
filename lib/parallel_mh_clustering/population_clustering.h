@@ -22,6 +22,7 @@
 #include "partition_config.h"
 #include "tools/global_timer.h"
 #include "clustering/louvainmethod.h"
+#include "clustering/leiden_config.h"
 #include "configuration.h"
 #include "tools/modularitymetric.h"
 #include "tools/random_functions.h"
@@ -40,7 +41,7 @@ using clustering_t = std::vector<unsigned>;
 
 class population_clustering {
         public:
-                population_clustering( MPI_Comm comm, const PartitionConfig & config );
+                population_clustering( MPI_Comm comm, const PartitionConfig & config, const LeidenConfig & leiden_config = LeidenConfig() );
                 virtual ~population_clustering();
 
                 void createIndividuum(const PartitionConfig & config, 
@@ -231,7 +232,11 @@ class population_clustering {
                         partition_config.cluster_coarsening_factor = 1;
 
 
-                        LouvainMethod{ }.performClustering(partition_config, &G, c.empty());
+                        if (m_use_leiden) {
+                                do_leiden_clustering(partition_config, G, c.empty());
+                        } else {
+                                LouvainMethod{}.performClustering(partition_config, &G, c.empty());
+                        }
 
                         clustering_t clustering(G.number_of_nodes(), -1);
                         extract_clustering(G, clustering);
@@ -330,7 +335,11 @@ class population_clustering {
                         return contracted_better;
                 }
 
+                void do_leiden_clustering(PartitionConfig & config, graph_access & G, bool start_w_singletons);
+
         private:
+                bool m_use_leiden;
+                double m_leiden_theta;
 
                 unsigned                m_no_partition_calls;
                 unsigned 		m_population_clustering_size;

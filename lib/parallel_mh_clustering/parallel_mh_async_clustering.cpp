@@ -33,6 +33,16 @@ parallel_mh_async_clustering::parallel_mh_async_clustering() : MASTER(0), m_time
         MPI_Comm_size( m_communicator, &m_size);
 }
 
+parallel_mh_async_clustering::parallel_mh_async_clustering(const LeidenConfig & leiden_config) : MASTER(0), m_time_limit(0), m_leiden_config(leiden_config) {
+        m_best_global_objective = std::numeric_limits<EdgeWeight>::max();
+        m_best_cycle_objective  = std::numeric_limits<EdgeWeight>::max();
+        m_rounds                = 0;
+        m_termination           = false;
+        m_communicator          = MPI_COMM_WORLD;
+        MPI_Comm_rank( m_communicator, &m_rank);
+        MPI_Comm_size( m_communicator, &m_size);
+}
+
 parallel_mh_async_clustering::parallel_mh_async_clustering(MPI_Comm communicator) : MASTER(0), m_time_limit(0) {
         m_best_global_objective = std::numeric_limits<EdgeWeight>::max();
         m_best_cycle_objective  = std::numeric_limits<EdgeWeight>::max();
@@ -50,7 +60,7 @@ parallel_mh_async_clustering::~parallel_mh_async_clustering() {
 
 void parallel_mh_async_clustering::perform_partitioning(const PartitionConfig & partition_config, graph_access & G) {
         m_time_limit      = partition_config.time_limit;
-        m_island          = new population_clustering(m_communicator, partition_config);
+        m_island          = new population_clustering(m_communicator, partition_config, m_leiden_config);
         m_best_global_map = new PartitionID[G.number_of_nodes()];
 
         srand(partition_config.seed*m_size+m_rank);

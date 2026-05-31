@@ -25,12 +25,14 @@
 #include "tools/global_timer.h"
 #include "uncoarsening/refinement/cycle_improvements/cycle_refinement.h"
 #include "clustering/louvainmethod.h"
+#include "clustering/leidenmethod.h"
+#include "clustering/connectivity.h"
 #include "clustering/coarsening/contractor.h"
 #include "partition/coarsening/clustering/size_constraint_label_propagation.h"
 #include "tools/modularitymetric.h"
 #include "tools/graph_extractor.h"
 
-population_clustering::population_clustering( MPI_Comm communicator, const PartitionConfig & partition_config ) {
+population_clustering::population_clustering( MPI_Comm communicator, const PartitionConfig & partition_config, const LeidenConfig & leiden_config ) {
         m_population_clustering_size    = partition_config.mh_pool_size;
         m_no_partition_calls = 0;
         m_num_NCs            = partition_config.mh_num_ncs_to_compute;
@@ -38,8 +40,16 @@ population_clustering::population_clustering( MPI_Comm communicator, const Parti
         m_num_ENCs           = 0;
         m_time_stamp         = 0;
         m_communicator       = communicator;
+        m_use_leiden         = leiden_config.enabled;
+        m_leiden_theta       = leiden_config.theta;
         global_timer_restart();
         best_objective = -1;
+}
+
+void population_clustering::do_leiden_clustering(PartitionConfig & config, graph_access & G, bool start_w_singletons) {
+        LeidenMethod lm;
+        lm.setLeidenConfig(LeidenConfig{true, m_leiden_theta});
+        lm.performClustering(config, &G, start_w_singletons);
 }
 
 population_clustering::~population_clustering() {
@@ -78,7 +88,13 @@ void population_clustering::createIndividuum(const PartitionConfig & config,
         if( lp_levels == 10) 
                 copy.lm_number_of_label_propagation_levels = 3; 
 
-        LouvainMethod{}.performClustering(copy, &G, true);
+        if (m_use_leiden) {
+                LeidenMethod lm;
+                lm.setLeidenConfig(LeidenConfig{true, m_leiden_theta});
+                lm.performClustering(copy, &G, true);
+        } else {
+                LouvainMethod{}.performClustering(copy, &G, true);
+        }
 
         int* partition_map = new int[G.number_of_nodes()];
         forall_nodes(G, node) {
@@ -208,6 +224,10 @@ void population_clustering::combine_basic_flat(const PartitionConfig & partition
         } endfor
 
         G.set_partition_count(G.get_partition_count_compute());
+        if (m_use_leiden) {
+                splitDisconnectedCommunities(G);
+                forall_nodes(G, n) { partition_map[n] = G.getPartitionIndex(n); } endfor
+        }
         output_ind.objective = ModularityMetric::computeModularity(G);
         output_ind.partition_map    = partition_map;
         output_ind.cut_edges        = new std::vector<EdgeID>();
@@ -222,10 +242,10 @@ void population_clustering::combine_basic_flat(const PartitionConfig & partition
         } endfor
 }
 
-void population_clustering::combine_improved_multilevel(const PartitionConfig & partition_config, 
-                graph_access & G, 
-                Individuum & first_ind, 
-                Individuum & second_ind, 
+void population_clustering::combine_improved_multilevel(const PartitionConfig & partition_config,
+                graph_access & G,
+                Individuum & first_ind,
+                Individuum & second_ind,
                 Individuum & output_ind) {
 
         double eps = 0.001;
@@ -299,6 +319,10 @@ void population_clustering::combine_improved_multilevel(const PartitionConfig & 
         } endfor
 
         G.set_partition_count(G.get_partition_count_compute());
+        if (m_use_leiden) {
+                splitDisconnectedCommunities(G);
+                forall_nodes(G, n) { partition_map[n] = G.getPartitionIndex(n); } endfor
+        }
         output_ind.objective = ModularityMetric::computeModularity(G);
         output_ind.partition_map    = partition_map;
         output_ind.cut_edges        = new std::vector<EdgeID>();
@@ -355,6 +379,10 @@ void population_clustering::combine_improved_flat(const PartitionConfig & partit
         } endfor
 
         G.set_partition_count(G.get_partition_count_compute());
+        if (m_use_leiden) {
+                splitDisconnectedCommunities(G);
+                forall_nodes(G, n) { partition_map[n] = G.getPartitionIndex(n); } endfor
+        }
         output_ind.objective = ModularityMetric::computeModularity(G);
         output_ind.partition_map    = partition_map;
         output_ind.cut_edges        = new std::vector<EdgeID>();
@@ -490,6 +518,10 @@ void population_clustering::combine_improved_flat_with_sclp(const PartitionConfi
         } endfor
 
         G.set_partition_count(G.get_partition_count_compute());
+        if (m_use_leiden) {
+                splitDisconnectedCommunities(G);
+                forall_nodes(G, n) { partition_map[n] = G.getPartitionIndex(n); } endfor
+        }
         output_ind.objective = ModularityMetric::computeModularity(G);
         output_ind.partition_map    = partition_map;
         output_ind.cut_edges        = new std::vector<EdgeID>();
@@ -581,6 +613,10 @@ void population_clustering::mutate_random( const PartitionConfig & partition_con
         } endfor
 
         G.set_partition_count(G.get_partition_count_compute());
+        if (m_use_leiden) {
+                splitDisconnectedCommunities(G);
+                forall_nodes(G, n) { partition_map[n] = G.getPartitionIndex(n); } endfor
+        }
         output_ind.objective = ModularityMetric::computeModularity(G);
         output_ind.partition_map    = partition_map;
         output_ind.cut_edges        = new std::vector<EdgeID>();
